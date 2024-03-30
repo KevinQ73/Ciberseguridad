@@ -2,4 +2,4 @@
 
 Prof: Gabriela Nicolao
 
-Resumenes de los temas vistos en la cursada.
+Resumenes de los temas vistos en la cursada de Ciberseguridad, electiva de Ing. en Sistemas UTN FRBA
