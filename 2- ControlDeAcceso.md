@@ -22,7 +22,7 @@
         - [Amenazas](#amenazas-2)
         - [Contramedidas](#contramedidas-2)
 - [Gestión de Identidades](#gestión-de-identidades)
-- [Acceso Unificado (Single Sign On)](#acceso-unificado-single-sign-on)
+    - [Acceso Unificado (Single Sign On)](#acceso-unificado-single-sign-on)
 - [Modelos de Control de Acceso](#modelos-de-control-de-acceso)
 - [Técnicas de Control de Acceso](#técnicas-de-control-de-acceso)
 
@@ -54,6 +54,12 @@
 
 - **Autorización**: Es el mecanismo utilizado para definir si el sujeto tiene o no acceso a determinados objetos.
     - Ejemplo: Listas de control de acceso, Control de acceso mandatorio, etc.
+
+#### Otros conceptos
+
+- **Trazabilidad (Accountability):** Habilidad para determinar las acciones individuales de un usuario dentro de un sistema. Esta soportado por logs de auditoría.
+
+- **No repudio:** El sujeto no puede negar que realizó cierta acción. Por ejemplo: En el envío de mensajes el no repudio del origen el emisor no puede negar que envió el mensaje.
 
 ### Tipos o factores de autentificación
 
@@ -255,7 +261,7 @@ contraseña en el servidor de autenticación.
     - Punto único de entrada.
     - Tiempo de desarrollo para sincronizar las aplicaciones.
 
-### Acceso Unificado (Single Sign On)
+#### Acceso Unificado (Single Sign On)
 - Logueo único para diferentes sistemas.
 - Ejemplos de protocolos: Kerberos, Oauth, SAML, OpenID, LDAP.
 - Ventajas:
@@ -269,11 +275,14 @@ contraseña en el servidor de autenticación.
 ### Modelos de Control de Acceso
 - **Control de Acceso Discrecional (DAC)**
     - Cada objeto tiene un dueño.
-    - Normalmente se implementa con Listas de Control de Acceso.
+    - Normalmente se implementa con Listas de Control de Acceso. Resumen para entender la manipulación de archivos en los SO [aquí](https://github.com/KevinQ73/TPs-SO/blob/main/2do%20Parcial/File%20System.md#manipulaci%C3%B3n-de-archivos)
 
 - **Control de Acceso Obligatorio (MAC)**
     - El sistema impone sus reglas.
-    - Se implementa con el uso de etiquetas.
+    - Se implementa con el uso de etiquetas a recursos y personas
+    - Las dividen en categorias
+    - Se suele implementar en el ámbito militar, bancario, SE linux o Discord.
+    - Si el recurso solicitado por la persona pertenecen a la misma categoria, se le da acceso, sino, nein.
 
 - **Control de Acceso Basado en Roles (RBAC)**
     - Asignación indirecta de permisos.
@@ -281,10 +290,9 @@ contraseña en el servidor de autenticación.
     - Facilita la implementación de Segregación de Funciones.
 
 ### Técnicas de Control de Acceso
-
 - Dependiente del Contexto (CBAC)
     - El sistema toma su decisión de acceso basado en el estado de una determinada cantidad de variables que conforman el contexto.
-        - Ejemplos: Control de Acceso de Red (NAC), Firewall de Red.
+        - Ejemplos: Control de Acceso de Red (NAC), Firewall de Red, Geolocalización.
 
 - Dependiente del Contenido
     - Las decisiones de acceso se basan en la sensibilidad del dato y su contenido.
