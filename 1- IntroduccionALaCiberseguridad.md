@@ -1,6 +1,28 @@
 # Introducción a la Ciberseguridad
 
 ## Índice
+- [La Triada de la Seguridad de la Información](#la-triada-de-la-seguridad-de-la-información)
+    - [Confidencialidad](#confidencialidad)
+        - [Amenazas](#amenazas)
+        - [Medidas de protección](#medidas-de-protección)
+    - [Integridad](#integridad)
+        - [Amenazas](#amenazas-1)
+        - [Medidas de protección](#medidas-de-protección-1)
+    - [Disponibilidad](#disponibilidad)
+        - [Amenazas](#amenazas-2)
+        - [Medidas de protección](#medidas-de-protección-2)
+- [Rol del Responsable de Seguridad](#rol-del-responsable-de-seguridad)
+    - [Organización](#organización)
+    - [Políticas, normas y procedimientos](#políticas-normas-y-procedimientos)
+        - [Políticas (Nivel Estratégico)](#políticas-nivel-estratégico)
+        - [Normas y Estándares (Nivel Táctico)](#normas-y-estándares-nivel-táctico)
+        - [Procedimientos (Nivel Operativo)](#procedimientos-nivel-operativo)
+    - [Controles](#controles)
+        - [Controles Físicos](#controles-físicos)
+        - [Controles Técnicos](#controles-técnicos)
+        - [Controles Administrativos](#controles-administrativos)
+    - [Clasificación y controles de activos](#clasificación-y-controles-de-activos)
+    - [Áreas en la Seguridad de la Información](#áreas-en-la-seguridad-de-la-información)
 
 ### La Triada de la Seguridad de la Información
 
