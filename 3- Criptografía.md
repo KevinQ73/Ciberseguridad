@@ -86,6 +86,7 @@ Para descifrar el criptograma y recuperar el mensaje en claro hay que enrollar l
 ##### César (Siglo I A.C.)
 
 ![GIF Joseph Joestar gritando por Caesar](https://pin.it/2dVN8hdTU)
+
 *Siempre en nuestros corazones Caesar Anthonio Zeppeli.*
 
 Dejando de lado las bromas, este algoritmo fue utilizado por Julio César. Consistía en el desplazamiento de tres espacios hacia la derecha de los caracteres del texto plano. Es un cifrador por sustitución monoalfabético en el que las operaciones se realizan **módulo n**, siendo n el número de elementos del alfabeto (en ese entonces el latín). Cada rotamiento se lo conoce como rot n, siendo el más popular el rot 13.
