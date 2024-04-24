@@ -155,7 +155,7 @@ Una vez realizada la comparación de los dos valores, si el `RFlag` es 1, habrá
 
 Ya leyendo esto, podemos lograr obtener siempre el resultado correcto. Abrimos el ejecutable y probamos con el `User ID` en 1 y 2.
 
-![Programa probado en el command prompt](/images/imagen2.png)
+![Programa probado en el command prompt](images/imagen2.png)
 
 ##### Keygen
 
