@@ -3,8 +3,11 @@
 Trabajo realizado en la primera vivencia de laboratorio de la cursada de Ciberseguridad, UTN FRBA 1er Cuatrimestre 2024.
 
 **Curso**: K3011
+
 **Profesores**: Gabriela Verónica Nicolao - Paula Alicia Suarez - Matias Mikael Baghdassarian
+
 **Alumno**: Kevin Harold Quiñones Garnica
+
 **Legajo**: 173.110-5
 
 Este documento tiene como finalidad explicar, detallar y mostrar los conocimientos adquiridos a lo largo del laboratorio a través de un *walk through* de los tres ejercicios realizados, y como detalle final, resolver dos ejercicios del sitio web [*ringzer0*](https://ringzer0ctf.com/), adjuntando la resolución junto con sus debidas *flags*.
