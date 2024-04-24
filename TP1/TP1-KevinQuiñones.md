@@ -82,7 +82,7 @@ Porque nos muestra un pantallazo de lo que realiza el programa, ya que si hay ur
 
 Una vez hecho todo esto, abrimos el programa con el *dnSPY* ya que, al ser un programa progrado en .NET, podemos decompilarlo y ver a simple vista como está desarrollado.
 
-![.exe decompilado por dnSPY](/images/imagen1.png)
+![.exe decompilado por dnSPY](images/imagen1.png)
 
 Ahora podemos ver el comportamiento. Como primera acción, genera un `Keygen` cuya lógica es:
 
