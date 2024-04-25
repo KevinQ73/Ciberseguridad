@@ -391,3 +391,41 @@ A simple vista, parecen iguales pero no lo son, vemos que hay palabras cambiadas
 ![Terminal](images/imagen23.png)
 
 En el cual, si juntamos todas las letras cambiadas en el texto original, nos queda este mensaje: **flagarenice**, el cual, como comienza con "flag", lo probamos y obtenemos dos puntos.
+
+# Calculadora Simple
+
+<div class="calculator">
+    <input type="text" id="display" disabled>
+    <input type="button" value="1" onclick="appendToDisplay('1')">
+    <input type="button" value="2" onclick="appendToDisplay('2')">
+    <input type="button" value="3" onclick="appendToDisplay('3')">
+    <input type="button" value="+" onclick="appendToDisplay('+')">
+    <input type="button" value="4" onclick="appendToDisplay('4')">
+    <input type="button" value="5" onclick="appendToDisplay('5')">
+    <input type="button" value="6" onclick="appendToDisplay('6')">
+    <input type="button" value="-" onclick="appendToDisplay('-')">
+    <input type="button" value="7" onclick="appendToDisplay('7')">
+    <input type="button" value="8" onclick="appendToDisplay('8')">
+    <input type="button" value="9" onclick="appendToDisplay('9')">
+    <input type="button" value="*" onclick="appendToDisplay('*')">
+    <input type="button" value="0" onclick="appendToDisplay('0')">
+    <input type="button" value="C" onclick="clearDisplay()">
+    <input type="button" value="=" onclick="calculate()">
+    <input type="button" value="/" onclick="appendToDisplay('/')">
+</div>
+
+<script>
+    function appendToDisplay(value) {
+        document.getElementById('display').value += value;
+    }
+
+    function clearDisplay() {
+        document.getElementById('display').value = '';
+    }
+
+    function calculate() {
+        var result = eval(document.getElementById('display').value);
+        document.getElementById('display').value = result;
+    }
+</script>
+
