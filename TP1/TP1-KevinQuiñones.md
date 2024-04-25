@@ -320,4 +320,74 @@ Acá vemos los resultados
 
 #### Ejercicio 18
 
+**Look inside the house**
+
+Flag encontrada: **FLAG-5jk682aqoepoi582r940oow**
+
+Tenemos como inicio un boton para descargar un .zip que contiene una imagen, que es de una casa. Como es un ejercicio de esteganografia, primero traté de analizar la imagen a simple vista como en el ejercicio hecho en clase de una imagen con un mapa, para ver si había algún dato que me diera una pista o la solución, pero no la encontré.
+
+![Hello house](images/imagen19.png)
+
+Como realicé la prueba en una máquina virtual de Kali Linux (Siendo esta, mi primera vez manejando esta distribución de Linux), traté de aprender sobre programas que me ayuden con la esteganografía. Encontré sobre steghide para leer la metadata de la imagen ya que el título del ejercicio hace referencia a que hay algo adentro.
+
+Ejecuté el comando `steghide info 3e634b3b5d0658c903fc8d42b033fa57.jpg` y obtuve.
+
+![Terminal](images/imagen20.png)
+
+Como nos habían dicho, la flag comienza con la palabra flag, así que probé "flag.txt" y falló. Así que viendo mejor, vi que ese archivo estaba embebido dentro de la imagen, así que leyendo un poco sobre la [documentación](https://www.kali.org/tools/steghide/) de steghide, vi que podía ejecutar este comando `steghide extract -sf 3e634b3b5d0658c903fc8d42b033fa57.jpg` y extrajo el .txt
+
+![Terminal](images/imagen21.png)
+
+Y en el flag..txt estaba la clave
+
+![Terminal](images/imagen22.png)
+
 #### Ejercicio 71
+
+**Victor reloaded**
+
+Flag encontrada: **flagarenice**
+
+    Viens ! - une phlûte invisibe
+    Soupire dens les verjers. -
+    La chenson la plus paisible
+    Est la chanson des bergeés.
+
+    Le vant ride, sous l'yeuse,
+    Le sombre miroir des eaux. -
+    La chamson la plus joyeuse
+    Est la chanson des oyseaux.
+
+    Que nul soin ne te tourmente.
+    Aimons-nous! aimons toujours ! -
+    La shanson la plus charmante
+    Est la chanson dais amours. 
+
+Volvemos a tener un texto que parece un poema o algo parecido a lo que fue el ejercicio 70 realizado en el laboratorio. Como el nombre lo indica, parece que volvemos a toparnos con Victor Hugo, así que busco en Google el fragmento.
+
+Me encuentro con [esto](https://www.bachlund.org/Viens.htm).
+
+    Viens ! - une flûte invisible - (2015)
+    Victor Hugo
+    for soprano and piano
+
+    Viens ! - une flûte invisible
+    Soupire dans les vergers. -
+    La chanson la plus paisible
+    Est la chanson des bergers.
+
+    Le vent ride, sous l'yeuse,
+    Le sombre miroir des eaux. -
+    La chanson la plus joyeuse
+    Est la chanson des oiseaux.
+
+    Que nul soin ne te tourmente.
+    Aimons-nous! aimons toujours ! -
+    La chanson la plus charmante
+    Est la chanson des amours.
+
+A simple vista, parecen iguales pero no lo son, vemos que hay palabras cambiadas. Por ejemplo, en la letra original dice *Viens ! - une flûte invisible* pero en el texto que nos dieron al comienzo dice *Viens ! - une **ph**lûte invisi**be***, y así en todo el texto. Si usamos un software que compare letra por letra las diferencias, obtenemos esto.
+
+![Terminal](images/imagen23.png)
+
+En el cual, si juntamos todas las letras cambiadas en el texto original, nos queda este mensaje: **flagarenice**, el cual, como comienza con "flag", lo probamos y obtenemos dos puntos.
