@@ -35,7 +35,7 @@ Este documento tiene como finalidad explicar, detallar y mostrar los conocimient
       - [RemoveCheck.exe](#removecheckexe)
         - [Consigna](#consigna-2)
         - [Resolución](#resolución-2)
-    - [Segunda parte](#segunda-parte)
+    - [Segunda parte - RingZer0](#segunda-parte---ringzer0)
       - [Ejercicio 18](#ejercicio-18)
       - [Ejercicio 71](#ejercicio-71)
 
@@ -316,7 +316,7 @@ Acá vemos los resultados
 
 ![sub_401740](images/imagen18.png)
 
-### Segunda parte
+### Segunda parte - RingZer0
 
 #### Ejercicio 18
 
