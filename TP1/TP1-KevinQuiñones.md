@@ -28,10 +28,11 @@ Este documento tiene como finalidad explicar, detallar y mostrar los conocimient
         - [Consigna](#consigna)
         - [Resolución](#resolución)
         - [Keygen](#keygen)
-      - [RemoveCheck.exe](#removecheckexe)
+      - [Encuentre la contraseña.exe](#encuentre-la-contraseñaexe)
         - [Consigna](#consigna-1)
         - [Resolución](#resolución-1)
-      - [Encuentre la contraseña.exe](#encuentre-la-contraseñaexe)
+        - [Parchear para que cualquier contraseña valga](#parchear-para-que-cualquier-contraseña-valga)
+      - [RemoveCheck.exe](#removecheckexe)
         - [Consigna](#consigna-2)
         - [Resolución](#resolución-2)
     - [Segunda parte](#segunda-parte)
@@ -109,7 +110,7 @@ Ahora podemos ver el comportamiento. Como primera acción, genera un `Keygen` cu
 
 Pide por consola que escriban un `User ID`, cuyo valor no puede sobrepasar los 4 dígitos. En caso de que suceda, se pide que reingrese un valor correcto. Este se guarda en la variable `this.UserID`.
 
-Después, pasamos a la función `Generate()` que se encarga de generar el código correcto. 
+Después, pasamos a la función `Generate()` que se encarga de generar el código correcto.
 
     private void Generate()
     {
@@ -159,7 +160,7 @@ Ya leyendo esto, podemos lograr obtener siempre el resultado correcto. Abrimos e
 
 ##### Keygen
 
-#### RemoveCheck.exe
+#### Encuentre la contraseña.exe
 
 ##### Consigna
 
@@ -168,13 +169,152 @@ Ya leyendo esto, podemos lograr obtener siempre el resultado correcto. Abrimos e
 
 ##### Resolución
 
-#### Encuentre la contraseña.exe
+Ya teniendo la experiencia del primer ejercicio, podemos no ser reiterativos en la explicación del uso de los programas y vamos a las partes esenciales de nuestro analisis. En este caso tenemos un ejecutable que primero analizaremos en el PEstudio para intentar resolver el primer punto que es indicar la contraseña.
+
+**Datos relevantes**
+
+|Descriptor|Data|
+|-|-|
+|first-bytes-hex|4D 5A 90 00 03 00 00 00 04 00 00 00 FF FF 00 00 B8 00 00 00 00 00 00 00 40 00 00 00 00 00 00 00 00|
+|first-bytes-text| M Z .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. @ .. .. .. .. .. .. .. .. |
+|size|40960 bytes|
+|entropy| 4.928|
+|signature| Microsoft Visual C++ 7.0|
+|cpu| 32-bit|
+|compiler-stamp| Wed Sep 15 03:45:40 2010 UTC|
+|virustotal-score|(0/71)|
+
+Ahora, pasamos a la parte de strings para ver si este archivo está ofuscado y ver más datos relevantes. Podemos ver esto que nos da el indicio de que en algún momento de la ejecución del programa, nos va a pedir la contraseña y se hará una verificación de si es correcta o no.
+
+![Strings relevantes](images/imagen3.png)
+
+Como el programa no tiene de firma Microsoft .NET, no podemos utilizar el dnSPY, pero para ello podemos utilizar IDA free, pero este tiene una diferencia con el dnSPY y es que IDA free es un desensamblador, mientras que el dnSPY es un decompilador.
+
+Abrimos en el IDA free el ejecutable y nos muestra en lenguaje assembler la lógica. Probamos ejecutando el programa y testeando el comportamiento. Después de una finita cantidad de intentos fallidos, el programa cierra, por lo que nos da indicio de que en vez de un while que te permita reintentar infinitas veces, hay un for que tiene limitado la cantidad de intentos.
+
+![IDA 1](images/imagen4.png)
+
+Acá podemos ver que se inicializa una variable en 0, y luego esta se compara con el valor 64h en hexadecimal, que sería el 100 en decimal. Lo que nos muestra es un for que repetirá la lógica de ingreso de la contraseña 100 veces ante el caso fallido, y si llega a 100, cierra el programa.
+
+Lo podemos ver ya que hace un `jge loc_4010C9`, que cuando la variable sea mayor a 100, salte para acá.
+
+![IDA fin](images/imagen5.png)
+
+Pero bueno, lo que nos interesa es la lógica para descubrir la contraseña.
+
+![IDA logica contraseña](images/imagen6.png)
+
+Sin entrar en detalles de assembler, se hace un `call` a la función `printf` que muestra por pantalla el mensaje *"Enter Password: "*
+
+    add     esp, 0Ch
+    push    offset Format   ; "Enter password: "
+    call    _printf
+
+Cuyo valor ingresado lo guarda con `fgets`. Vemos que lo ingresado se almacena en la variable `Str1`, lo pushea a la pila y llama a `strlen`
+
+    add     esp, 4
+    push    offset Stream   ; Stream
+    push    100h            ; MaxCount
+    lea     edx, [ebp+Str1]
+    push    edx             ; Buffer
+    call    _fgets
+    add     esp, 0Ch
+    lea     eax, [ebp+Str1]
+    push    eax             ; Str
+    call    _strlen
+
+Y al final realiza una comparación con `strcmp` para ver si la contraseña ingresada es la correcta. Para hacerlo, pushea a la pila el valor de `Str1` junto a un valor `Str2`, al cual el IDA nos muestra que tiene por valor *"superbad"* probablemente porque esté hardcodeado.
+
+![IDA contraseña](images/imagen7.png)
+
+    add     esp, 4
+    mov     byte ptr [ebp+eax+var_10C+3], 0
+    mov     ecx, Str2
+    push    ecx             ; Str2
+    lea     edx, [ebp+Str1]
+    push    edx             ; Str1
+    call    _strcmp
+
+Para finalizar, realiza un `jz short loc_4010B5` que es la verificación del valor de retorno de `strcmp`. Si es 0, es porque son strings idénticos y muestra por pantalla el mensaje de *"Correct password"* para finalizar el programa. Si no es 0, vuelve por el for mostrando por pantalla *"Wrong password"* y volviendo a comenzar.
+
+Una vez encontrado el valor de la contraseña, corroboramos y vemos que efectivamente era la correcta.
+
+![Correct password](images/imagen8.png)
+
+##### Parchear para que cualquier contraseña valga
+
+El segundo punto de este ejercicio es lograr parchear el programa para que, independientemente del valor que pongas, logre aceptar la contraseña.
+
+El truco para lograr esto está en la parte final del bloque que evalua los dos strings. Podemos ver que realizaba un salto condicional a `loc_4010B5si` si el valor era 0 después de comparar los strings, donde está el bloque que dice *"Correct password"* y finaliza el programa. Como lo que nos interesa es que cualquier contraseña valga, debemos hacer que en vez de realizar un salto condicional, haga un `jmp` hacia `loc_4010B5si`.
+
+Para lograrlo, vemos que en la tabla hexadecimal, el `jz` está representado por 74 0F, donde **74** es el valor de la operación salto condicional y **0F** es el valor restante a la que saltará `jz`. Y `jmp`, tiene como opcode el valor **EB** hexadecimal.
+
+Entonces, con cambiar el 74 a EB, lograríamos cambiar de operación, pasando de salto condicional a un salto normal. Para ello, usaremos un editor hexadecimal como lo es HxD.
+
+Con el IDA copiamos la secuencia de números hexadecimales donde está lo que queremos cambiar, para buscarlo con el HxD que tiene abierto para editar el ejecutable. Una vez encontrado esa secuencia, cambiamos el 74 por EB y listo.
+
+![Correct password](images/imagen9.png)
+
+![Correct password](images/imagen10.png)
+
+Probamos el nuevo ejecutable parcheado.
+
+![Correct password](images/imagen11.png)
+
+Y lo revisamos en el IDA para ver que efectivamente cambio de opcode.
+
+![Correct password](images/imagen12.png)
+
+#### RemoveCheck.exe
 
 ##### Consigna
 
 1. Modifique el programa para que cualquier nombre de organizacion y serial ingresados sean validos.
 
 ##### Resolución
+
+Para resolver este ejercicio, primero analicemos el ejecutable para entender con que estamos lidiando.
+
+**Datos relevantes**
+
+|Descriptor|Data|
+|-|-|
+|first-bytes-hex|4D 5A 90 00 03 00 00 00 04 00 00 00 FF FF 00 00 B8 00 00 00 00 00 00 00 40 00 00 00 00 00 00 00 00|
+|first-bytes-text| M Z .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. @ .. .. .. .. .. .. .. .. |
+|size|6144 bytes|
+|entropy| 4.950|
+|signature| Microsoft Visual C++|
+|cpu| 32-bit|
+|compiler-stamp| Sun Nov 04 20:48:40 2007 UTC|
+|virustotal-score|(0/71)|
+
+Y acá están estos strings que muestran un poco el comportamiento
+
+![Correct password](images/imagen13.png)
+
+Abrimos el ejecutable en IDA free
+
+![Correct password](images/imagen14.png)
+
+El comportamiento es el siguiente. Muestra por pantalla el mensaje *"Enter organization name: "* y almacena el valor ingresado con `scanf`. Repetimos lo mismo con *"Enter serial number: "*. Los datos ingresados sobre la organización se guardan en eax y el serial en edx.
+
+Una vez realizado, llama a `sub_401740` que es un bloque aparte que realiza lo siguiente
+
+![sub_401740](images/imagen15.png)
+
+Basicamente lo que hace, es una llamada a dos `strlen`, donde guardan los datos ingresados de la organización al registro `eax` y después guardarlo en `[ebp+var_4]` y en `[ebp+var_8]`. Al final se realiza un `cmp` entre `edx` y `[ebp+var_8]`. Con el resultado, pasamos a `jnz short loc_401775` donde si el `cmp` pone el `ZF` en 1 por ser dos cosas iguales que se compararon, pone en 0 el registro `eax` con `xor` y retorna. Si por el contrario no salta, pone el `eax` en 1 y retorna.
+
+![sub_401740](images/imagen16.png)
+
+Después de ejecutar ese bloque, el valor de `eax` se guarda en `[ebp+var_4]` y hace el `cmp` de ese valor con 0. Sigue con un `jz short loc_401856`. Si el valor retornado por `sub_401740` fue 0, da error con el mensaje *"An invalid serial number was entered"* y vuelve a comenzar todo. En el otro caso, sale el mensaje *"A valid serial number was entered"* y cierra.
+
+Como el ejercicio pide que cualquier nombre de organización y serial sea válido, aplicaremos una solución parecida al ejercicio dos, donde modificaremos el valor hexadecimal del `jz short loc_401856` por `js short loc_401856`, donde `js` que es "Jump if sign", va a saltar al bloque donde tira el error y volvemos a comenzar si el flag `SF` está en 1, pero como el `cmp` previo te da o 0 o 1 ya que en teoría realiza un `sub`, nunca se va a alterar el `SF`, asi que siempre va a pasar por el bloque de verdadero.
+
+![sub_401740](images/imagen17.png)
+
+Acá vemos los resultados
+
+![sub_401740](images/imagen18.png)
 
 ### Segunda parte
 
