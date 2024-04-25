@@ -392,7 +392,36 @@ A simple vista, parecen iguales pero no lo son, vemos que hay palabras cambiadas
 
 En el cual, si juntamos todas las letras cambiadas en el texto original, nos queda este mensaje: **flagarenice**, el cual, como comienza con "flag", lo probamos y obtenemos dos puntos.
 
-# Calculadora Simple
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <style>
+        .calculator {
+            width: 300px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        input[type="text"] {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+        input[type="button"] {
+            width: 48%;
+            padding: 10px;
+            margin: 1%;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
 
 <div class="calculator">
     <input type="text" id="display" disabled>
@@ -429,3 +458,5 @@ En el cual, si juntamos todas las letras cambiadas en el texto original, nos que
     }
 </script>
 
+</body>
+</html>
