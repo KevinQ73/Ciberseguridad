@@ -105,7 +105,7 @@ Para descifrar el criptograma y recuperar el mensaje en claro hay que enrollar l
 
 ##### César (Siglo I A.C.)
 
-![GIF Joseph Joestar gritando por Caesar](https://pin.it/2dVN8hdTU)
+![GIF Joseph Joestar gritando por Caesar](../img/jojos-bizarre-adventures-caesar.gif)
 
 *Siempre en nuestros corazones Caesar Anthonio Zeppeli.*
 
